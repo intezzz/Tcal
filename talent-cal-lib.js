@@ -11,6 +11,16 @@ function TalentCalendar(startYear, endYear, currMonth, currYear){
   this.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   this.startYear = startYear;
   this.endYear = endYear;
+  this.colorCoding = [
+    {
+      eventType: "stand-up",
+      color: "#8df5cf",
+    },
+    {
+      eventType: "tv-show",
+      color: "#f5ba83"
+    },
+  ]
 }
 
 // get the number of days of a given month
@@ -320,6 +330,7 @@ function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, e
         const listItem = document.createElement("li");
         listItem.classList.add("event");
         listItem.classList.add(events[i].eventType);
+        listItem.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${events[i].eventType}-color`);
         listItem.id = "event-" + String(i);
         if (clickableEvent){
           drawClickableEvents(false, [listItem], events);
@@ -387,6 +398,7 @@ function drawClickableEvents(mode, toBeDrawn, events){
     const modalHeader = document.createElement("div");
     modalHeader.classList.add("event-modal-header");
     modalHeader.classList.add(currEventObj.eventType);
+    modalHeader.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${currEventObj.eventType}-color`);
     const closeButton = document.createElement("span");
     closeButton.classList.add("close-button");
     closeButton.innerHTML = "&times;";
@@ -444,7 +456,15 @@ function drawClickableEvents(mode, toBeDrawn, events){
       }
     }
   };
+}
 
+// update color coding by updating :root values
+function updateColorCoding(newColorCoding){
+  const root = document.querySelector(":root");
+  for (let i = 0; i < newColorCoding.length; i++){
+    const currColorCode = newColorCoding[i];
+    root.style.setProperty("--" + currColorCode.eventType + "-color", currColorCode.color);
+  }
 }
 
 TalentCalendar.prototype = {
@@ -457,17 +477,33 @@ TalentCalendar.prototype = {
 
   // add events
   addEvents: function (events){
-    this.events = events;
+    this.events = this.events.concat(events);
+    if (document.getElementsByClassName("calendar").length > 0){
+      const drawingCalendarDays = drawCalendarDays.bind(this);
+      drawingCalendarDays(this.selectedMonth, this.selectedYear);
+    }
   },
 
   // enable clickable side panel event pop-up
-  // todo: add actual function
   enableClickableEvents: function (){
     this.clickableEvents = true;
     console.log("here")
     drawClickableEvents(true, null, this.events);
   },
 
-  // todo: custom color coding
+  // customize color coding of appearances
+  // note: this overwrites all pre-existing color coding and event types,
+  // including default ones
+  // for example, if newColorCoding does not contain eventType: "stand-up",
+  // color coding for "stand-up" type events will no longer exist
+  // newColorCoding = list of objects in the format of
+  // {
+  //   eventType: event-type-name (this is also the class for that type of event)
+  //   color: #colorCode
+  // }
+  customizeColorCoding: function(newColorCoding){
+    this.colorCoding = newColorCoding;
+    updateColorCoding(newColorCoding);
+  },
 
 }

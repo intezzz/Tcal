@@ -1,3 +1,8 @@
+:root{
+    --stand-up-color: #8df5cf;
+    --tv-show-color: #f5ba83;
+}
+
 body, *{
     padding:0;
     margin:0;
@@ -8,11 +13,11 @@ body, *{
 /*Styles for color coding different types of events*/
 /*repeat non-sense-ly to get higher specificity */
 .tv-show.tv-show.tv-show{
-    background-color: #f5ba83;
+    background-color: var(--tv-show-color);
 }
 
 .stand-up.stand-up.stand-up{
-    background-color: #8df5cf;
+    background-color: var(--stand-up-color);
 }
 
 .calendar
@@ -166,6 +171,7 @@ body, *{
     align-content: center;
     font-family: "Calibri Light", serif;
     text-align: center;
+    scrollbar-gutter: stable;
 }
 
 .event-list .event{
@@ -207,7 +213,6 @@ body, *{
 
 .event-modal .event-modal-content .event-modal-header {
     padding: 2px 16px;
-    background-color: #8df5cf;
     color: white;
 }
 

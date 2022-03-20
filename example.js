@@ -88,3 +88,25 @@ tc.addEvents([
   },
 ])
 tc.createCalendar(document.getElementById("body"));
+tc.customizeColorCoding([
+  {
+    eventType: "stand-up",
+    color: "#8df5cf",
+  },
+  {
+    eventType: "tv-show",
+    color: "#f5ba83"
+  },
+  {
+    eventType: "new-type",
+    color: "blue"
+  },
+])
+tc.addEvents([{
+  eventName: "Test",
+  eventType: "new-type",
+  startTime: new Date(2022, 2, 3, 0, 39, 0, 0),
+  endTime: new Date(2022, 2, 3, 0, 40, 0, 0),
+  location: "somewhere"
+},]);
+tc.enableClickableEvents();
