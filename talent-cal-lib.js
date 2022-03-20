@@ -4,6 +4,7 @@ console.log("SCRIPT: Creating and loading our JS libraries");
 
 function TalentCalendar(startYear, endYear, currMonth, currYear){
   this.events = [];
+  this.clickableEvents = false;
   this.selectedMonth = currMonth;
   this.selectedYear = currYear;
   this.selectedDay = null;
@@ -24,7 +25,6 @@ function getFilteredEvents(events, month, year){
   for (let i = 0; i < events.length; i++){
     const currDate = events[i].startTime;
     if (currDate.getMonth() === month && currDate.getFullYear() === year){
-      console.log(ret[currDate.getDate()])
       if (ret[currDate.getDate()] === undefined || ret[currDate.getDate()] === null || ret[currDate.getDate() === 0]){
         ret[currDate.getDate()] = [events[i]];
         // ret[currDate.getDate()].push(events[i]);
@@ -98,7 +98,7 @@ function drawCalendarDays(month, year){
       this.selectedDay = selectedDay;
 
       // update side panel event display
-      drawEventsPanel(currMonth, currYear, selectedDay, this.events);
+      drawEventsPanel(currMonth, currYear, selectedDay, this.events, this.clickableEvents);
     }).bind(this));
 
     calendarDays.appendChild(currDay)
@@ -130,7 +130,7 @@ function drawCalendarYears(startYear, endYear, yearsElement){
         document.getElementById("curr-year").innerHTML = selectedYear;
         const drawingCalendarDays = drawCalendarDays.bind(this);
         drawingCalendarDays(month, selectedYear); // re-render the calendar days when clicked
-        drawEventsPanel(month, selectedYear, null, this.events);
+        drawEventsPanel(month, selectedYear, null, this.events, this.clickableEvents);
         return selectedYear;
       }).bind(this)
     }).bind(this)();
@@ -155,7 +155,7 @@ function drawCalendarMonths(monthsElement){
         document.getElementById("curr-month").innerHTML = months[i];
         const drawingCalendarDays = drawCalendarDays.bind(this);
         drawingCalendarDays(i, year); // re-render the calendar days when clicked
-        drawEventsPanel(i, year, null, this.events);
+        drawEventsPanel(i, year, null, this.events, this.clickableEvents);
         return i;
       }).bind(this)
     }).bind(this)();
@@ -163,58 +163,8 @@ function drawCalendarMonths(monthsElement){
   }
 }
 
-// get string of appearance
-function getStringOfEvent(appearance){
-  return appearance.eventName + "<br>" + appearance.startTime.toLocaleString('en-GB', { timeZone: 'EST' }) + "<br>" + appearance.location;
-}
-
-// insert events of current month to side panel
-// return the number of events in the current month
-function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, events){
-  const calendarData = document.getElementById("eventlist-cell");
-  calendarData.innerHTML = ""; // clear the canvas to draw events
-  const eventList = document.createElement("ul");
-  eventList.classList.add("event-list")
-  const title = document.createElement("span");
-  title.classList.add("event-title");
-  title.innerHTML = currSelectedDay ? `Appearances on ${currSelectedDay}/${currSelectedMonth + 1}` : `Upcoming Appearances`;
-  calendarData.appendChild(title);
-
-  // sort events in ascending order for displaying nicely
-  events.sort((b, a) => {
-    return b.startTime - a.startTime;
-  });
-
-  let count = 0;
-  for (let i = 0; i < events.length; i++){
-    const currDate = events[i].startTime;
-    const today = new Date();
-    if (currDate.getFullYear() === currSelectedYear && currDate.getMonth() === currSelectedMonth){
-      if (currSelectedDay === null && today.getDate() <= currDate.getDate() || currSelectedDay === currDate.getDate()){
-        if (currSelectedDay === null){
-          count += 1;
-        }
-        const listItem = document.createElement("li");
-        listItem.classList.add("event");
-        listItem.classList.add(events[i].eventType);
-        // todo: style events properly
-        const span = document.createElement("span");
-        span.classList.add("event-details");
-        span.innerHTML = getStringOfEvent(events[i]);
-        listItem.appendChild(span);
-        eventList.appendChild(listItem);
-        if (count === 4){
-          break;
-        }
-      }
-    }
-  }
-  calendarData.appendChild(eventList);
-}
-
 function drawCalendar(elementToBeAddedTo, startYear, endYear){
   // create table that contains the calendar
-  // todo: style table properly
   const calendarTable = document.createElement("table");
   calendarTable.id = "calendar-table";
   calendarTable.classList.add("calendar-table");
@@ -240,7 +190,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   elementToBeAddedTo.appendChild(calendarTable);
 
   // insert events in this month to the side panel
-  drawEventsPanel(this.selectedMonth, this.selectedYear, this.selectedDay, this.events);
+  drawEventsPanel(this.selectedMonth, this.selectedYear, this.selectedDay, this.events, this.clickableEvents);
 
 
   // creates the outline of the calendar
@@ -337,6 +287,166 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
 
 }
 
+// get string of appearance
+function getStringOfEvent(appearance){
+  return appearance.eventName + "<br>" + appearance.startTime.toLocaleString('en-GB', { timeZone: 'EST' }) + "<br>" + appearance.location;
+}
+
+// insert events of current month to side panel
+function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, events, clickableEvent){
+  const calendarData = document.getElementById("eventlist-cell");
+  calendarData.innerHTML = ""; // clear the canvas to draw events
+  const eventList = document.createElement("ul");
+  eventList.classList.add("event-list")
+  const title = document.createElement("span");
+  title.classList.add("event-title");
+  title.innerHTML = currSelectedDay ? `Appearances on ${currSelectedDay}/${currSelectedMonth + 1}` : `Upcoming Appearances`;
+  calendarData.appendChild(title);
+
+  // sort events in ascending order for displaying nicely
+  events.sort((b, a) => {
+    return b.startTime - a.startTime;
+  });
+
+  let count = 0;
+  for (let i = 0; i < events.length; i++){
+    const currDate = events[i].startTime;
+    const today = new Date();
+    if (currDate.getFullYear() === currSelectedYear && currDate.getMonth() === currSelectedMonth){
+      if (currSelectedDay === null && today.getDate() <= currDate.getDate() || currSelectedDay === currDate.getDate()){
+        if (currSelectedDay === null){
+          count += 1;
+        }
+        const listItem = document.createElement("li");
+        listItem.classList.add("event");
+        listItem.classList.add(events[i].eventType);
+        listItem.id = "event-" + String(i);
+        if (clickableEvent){
+          drawClickableEvents(false, [listItem], events);
+        }
+        const span = document.createElement("span");
+        span.classList.add("event-details");
+        span.innerHTML = getStringOfEvent(events[i]);
+        listItem.appendChild(span);
+        eventList.appendChild(listItem);
+        if (count === 4){
+          break;
+        }
+      }
+    }
+  }
+  calendarData.appendChild(eventList);
+}
+
+// formatted event time
+// format: 12/3/2022 11:00:00 - 12:00:00
+function getFormattedEventTimeString(currEvent){
+  const startDate = currEvent.startTime.toLocaleDateString("en-GB", { timeZone: 'EST' });
+  const endDate = currEvent.endTime.toLocaleDateString("en-GB", { timeZone: 'EST' });
+  const startTime = currEvent.startTime.toLocaleTimeString("en-GB", { timeZone: 'EST' });
+  const endTime = currEvent.endTime.toLocaleTimeString("en-GB", { timeZone: 'EST' });
+
+  return startDate + " " + startTime + " - " + (endDate === startDate ? "" : endDate + " ") + endTime + "<br>";
+}
+
+// mode: if it is the first time being called -> through enableClickableEvents = true
+// mode == false -> redrawing due to change of selection -> called through drawEventsPanel
+// toBeDrawn: list of html elements to be drawn
+function drawClickableEvents(mode, toBeDrawn, events){
+
+  if (toBeDrawn === null){
+    toBeDrawn = document.getElementsByClassName("event");
+  }
+
+  for (let i = 0; i < toBeDrawn.length; i++){
+    const currEvent = toBeDrawn[i];
+
+    // add cursor style on hover
+    currEvent.onmouseover = (function (){
+      return function (){
+        currEvent.style.cursor = "pointer";
+      }
+    })();
+
+    // extract index of event in this.events from element id
+    // get the event details
+    const index = currEvent.id.split("-").pop();
+    const currEventObj = events[index];
+
+    // draw modal (popup)
+    ////////////////////////
+    const eventModal = document.createElement("div");
+    eventModal.classList.add("event-modal");
+    eventModal.id = "modal-" + currEvent.id;
+    eventModal.style.display = "none"; // set as none -> not display unless clicked
+    const eventModalContents = document.createElement("div");
+    eventModalContents.classList.add("event-modal-content");
+    eventModal.appendChild(eventModalContents);
+
+    // modal header -> event name & close button
+    const modalHeader = document.createElement("div");
+    modalHeader.classList.add("event-modal-header");
+    modalHeader.classList.add(currEventObj.eventType);
+    const closeButton = document.createElement("span");
+    closeButton.classList.add("close-button");
+    closeButton.innerHTML = "&times;";
+    const modalTitle = document.createElement("h2");
+    modalTitle.classList.add("event-modal-title");
+    modalTitle.innerHTML = currEventObj.eventName;
+    modalHeader.appendChild(closeButton);
+    modalHeader.appendChild(modalTitle);
+
+    // modal body
+    const modalBody = document.createElement("div");
+    modalBody.classList.add("event-modal-body");
+    const modalEventLocation = document.createElement("span");
+    modalEventLocation.classList.add("event-modal-location");
+    modalEventLocation.innerHTML = currEventObj.location + "<br>";
+    modalBody.appendChild(modalEventLocation);
+    const modalEventTime = document.createElement("span");
+    modalEventTime.classList.add("event-modal-time");
+    modalEventTime.innerHTML = getFormattedEventTimeString(currEventObj);
+    modalBody.appendChild(modalEventTime);
+    if (currEventObj.description !== undefined){
+      const modalEventDescription = document.createElement("p");
+      modalEventDescription.classList.add("event-modal-description");
+      modalEventDescription.innerHTML = currEventObj.description;
+      modalBody.appendChild(modalEventDescription);
+    }
+    // todo: add support for hosts/guests, ticketting info etc.
+
+    // append components to modal
+    eventModalContents.appendChild(modalHeader);
+    eventModalContents.appendChild(modalBody);
+
+    // configure close button onclick event
+    closeButton.onclick = function (){
+      eventModal.style.display = "none";
+    };
+
+    // append modal to body
+    const body = document.getElementsByTagName("body")[0];
+    body.appendChild(eventModal);
+    ////////////////////////
+
+    // configure onclick event for side panel event
+    currEvent.onclick = function (){
+      eventModal.style.display = "block";
+    };
+  }
+
+  // configure close modal when click outside of box
+  window.onclick = function(event){
+    const listOfModals = document.getElementsByClassName("event-modal");
+    for (let i = 0; i < listOfModals.length; i++){
+      if (listOfModals[i] === event.target){
+        listOfModals[i].style.display = "none";
+      }
+    }
+  };
+
+}
+
 TalentCalendar.prototype = {
 
   // create calendar
@@ -349,5 +459,15 @@ TalentCalendar.prototype = {
   addEvents: function (events){
     this.events = events;
   },
+
+  // enable clickable side panel event pop-up
+  // todo: add actual function
+  enableClickableEvents: function (){
+    this.clickableEvents = true;
+    console.log("here")
+    drawClickableEvents(true, null, this.events);
+  },
+
+  // todo: custom color coding
 
 }

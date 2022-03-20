@@ -2,7 +2,19 @@ body, *{
     padding:0;
     margin:0;
     box-sizing: border-box;
+    font-family: "Calibri Light", serif;
 }
+
+/*Styles for color coding different types of events*/
+/*repeat non-sense-ly to get higher specificity */
+.tv-show.tv-show.tv-show{
+    background-color: #f5ba83;
+}
+
+.stand-up.stand-up.stand-up{
+    background-color: #8df5cf;
+}
+
 .calendar
 {
     background-color: white;
@@ -17,6 +29,7 @@ body, *{
     position: absolute;
     background-color: #fff;
     color: #1caff6;
+    /*todo: change color*/
     text-align: center;
     font-size: 14pt;
     padding: 5px 30px;
@@ -52,6 +65,7 @@ body, *{
 {
     float: left;
     background-color: #24aeff;
+    /*todo: change color*/
     color: white;
     text-align: center;
     font-size: 14pt;
@@ -65,6 +79,7 @@ body, *{
 
 .calendar .calendar-button:hover{
     background-color:#1f71a1;
+/*    todo: change color*/
 }
 
 .calendar .year-button
@@ -93,6 +108,7 @@ body, *{
 .calendar .calendar-dates .days .day.selected
 {
     background-color: #1caff6;
+    /*todo: change color*/
     color: white;
     cursor:pointer;
     opacity: .5;
@@ -154,15 +170,17 @@ body, *{
 
 .event-list .event{
     box-shadow: 0 2px 3px rgba(0,0,0,0.4);
-    border-radius: 25px;
+    border-radius: 20px;
     padding: 3px;
     margin: 4px;
     align-content: center;
     text-align: center;
 }
 
-.event-list .event:hover{
-    cursor: pointer;
+.event-list .event:hover,
+.event-title:hover,
+.days .label.label.label:hover{
+    cursor: default;
 }
 
 .event-list .event .event-details{
@@ -173,12 +191,55 @@ body, *{
     font-family: "Calibri Light", serif;
 }
 
-.tv-show{
-    background-color: #f5ba83;
+.event-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 15%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* black with opacity */
 }
 
-.stand-up{
+.event-modal .event-modal-content .event-modal-header {
+    padding: 2px 16px;
     background-color: #8df5cf;
+    color: white;
+}
+
+
+.event-modal .event-modal-content .event-modal-body {
+    padding: 2px 16px;
+}
+
+.event-modal .event-modal-content .event-modal-body .event-modal-location {
+    font-style: italic;
+}
+
+.event-modal .event-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+}
+
+.close-button {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 960px) {
