@@ -85,7 +85,7 @@ function drawCalendarDays(month, year){
     // const numberOfEvents = filteredEvents[currDate] ? filteredEvents[currDate].length : 0;
     const numberOfEvents = filteredEvents[currDate] ? 1 : 0;
 
-    currDay.id = "calendarday-" + currDate;
+    currDay.classList.add("calendarday-" + currDate);
     currDay.classList.add("day");
     currDay.innerHTML = String(currDate) + "*".repeat(numberOfEvents); // todo: style properly
     // todo: style number of events properly
@@ -97,7 +97,7 @@ function drawCalendarDays(month, year){
       if (selectedDay !== currDate){
         // prevent multiple selection > toggle "selected" when another day is selected
         if (selectedDay !== null){
-          const prevSelected = this.parentElement.getElementById("calendarday-" + selectedDay);
+          const prevSelected = this.parentElement.getElementsByClassName("calendarday-" + selectedDay)[0];
           prevSelected.classList.toggle("selected");
         }
         selectedDay = currDate;
@@ -177,15 +177,14 @@ function drawCalendarMonths(monthsElement){
 function drawCalendar(elementToBeAddedTo, startYear, endYear){
   // create table that contains the calendar
   const calendarTable = document.createElement("table");
-  calendarTable.id = "calendar-table";
   calendarTable.classList.add("calendar-table");
 
   const calendarTableRow = document.createElement("tr");
-  calendarTableRow.id = "calendartable-firstrow";
+  calendarTableRow.classList.add("calendartable-firstrow");
   calendarTableRow.classList.add("calendartable-row");
 
   const calendarTableData = document.createElement("td");
-  calendarTableData.id = "calendar-cell";
+  calendarTableData.classList.add("calendar-cell");
   calendarTableData.classList.add("calendar-tablecell");
 
   const eventData = document.createElement("td");
@@ -207,7 +206,6 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   // creates the outline of the calendar
   const calendar = document.createElement("div");
   calendar.classList.add("calendar");
-  calendar.id = "calendar";
 
   // month button on the top left
   const monthButton = document.createElement("div");
@@ -224,7 +222,6 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   currMonth.innerHTML = this.months[this.selectedMonth];
   monthButton.append(currMonth);
   const monthsDropdown = document.createElement("div");
-  monthsDropdown.id = "months";
   monthsDropdown.classList.add("months");
   monthsDropdown.classList.add("dropdown");
   const drawingCalendarMonths = drawCalendarMonths.bind(this); // binding such this keyword works
@@ -242,11 +239,10 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
     }
   })();
   const currYear = document.createElement("span");
-  currYear.id = "curr-year";
+  currYear.classList.add("curr-year");
   currYear.innerHTML = this.selectedYear;
   yearButton.append(currYear);
   const yearDropdown = document.createElement("div");
-  yearDropdown.id = "years";
   yearDropdown.classList.add("years");
   yearDropdown.classList.add("dropdown");
   const drawingCalendarYears = drawCalendarYears.bind(this);
@@ -332,7 +328,7 @@ function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, e
         listItem.classList.add("event");
         listItem.classList.add(events[i].eventType);
         listItem.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${events[i].eventType}-color`);
-        listItem.id = "event-" + String(i);
+        listItem.classList.add("event-" + String(i));
         if (clickableEvent){
           drawClickableEvents(false, [listItem], events, parentElement);
         }
@@ -389,7 +385,7 @@ function drawClickableEvents(mode, toBeDrawn, events, parentElement){
     ////////////////////////
     const eventModal = document.createElement("div");
     eventModal.classList.add("event-modal");
-    eventModal.id = "modal-" + currEvent.id;
+    eventModal.classList.add("modal-" + currEvent.id);
     eventModal.style.display = "none"; // set as none -> not display unless clicked
     const eventModalContents = document.createElement("div");
     eventModalContents.classList.add("event-modal-content");
