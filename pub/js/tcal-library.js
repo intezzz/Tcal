@@ -62,6 +62,7 @@ function drawCalendarDays(month, year){
   // get the events that happened this month
   // return object with dates as key, and 0 or list of events on the day as values
   const filteredEvents = getFilteredEvents(this.events, this.selectedMonth, this.selectedYear);
+  console.log(filteredEvents)
 
   // find where to start the calendar's day of week
   let currDate = new Date(year, month, 0);
@@ -459,7 +460,7 @@ function drawClickableEvents(mode, toBeDrawn, events, parentElement){
 
   // configure close modal when click outside of box
   window.onclick = function(event){
-    const listOfModals = parentElement.getElementsByClassName("event-modal");
+    const listOfModals = document.getElementsByClassName("event-modal");
     for (let i = 0; i < listOfModals.length; i++){
       if (listOfModals[i] === event.target){
         listOfModals[i].style.display = "none";
