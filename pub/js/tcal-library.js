@@ -212,6 +212,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   const monthButton = document.createElement("div");
   monthButton.classList.add("calendar-button");
   monthButton.classList.add("month-button");
+  monthButton.style.backgroundColor = this.parentElement.style.getPropertyValue("--default-color");
   monthButton.onclick = (function (){
     const parentElement = this.parentElement;
     return function (){
@@ -235,6 +236,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   const yearButton = document.createElement("div");
   yearButton.classList.add("calendar-button");
   yearButton.classList.add("month-button");
+  yearButton.style.backgroundColor = this.parentElement.style.getPropertyValue("--default-color")
   yearButton.onclick = (function (){
     const parentElement = this.parentElement;
     return function (){
@@ -333,7 +335,8 @@ function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, e
         const listItem = document.createElement("li");
         listItem.classList.add("event");
         listItem.classList.add(events[i].eventType);
-        listItem.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${events[i].eventType}-color`);
+        // listItem.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${events[i].eventType}-color`);
+        listItem.style.backgroundColor = parentElement.style.getPropertyValue(`--${events[i].eventType}-color`);
         listItem.classList.add("event-" + String(i));
         if (clickableEvent){
           drawClickableEvents(false, [listItem], events, parentElement);
@@ -409,7 +412,8 @@ function drawClickableEvents(mode, toBeDrawn, events, parentElement){
     const modalHeader = document.createElement("div");
     modalHeader.classList.add("event-modal-header");
     modalHeader.classList.add(currEventObj.eventType);
-    modalHeader.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${currEventObj.eventType}-color`);
+    // modalHeader.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${currEventObj.eventType}-color`);
+    modalHeader.style.backgroundColor = parentElement.style.getPropertyValue(`--${currEventObj.eventType}-color`);
     const closeButton = document.createElement("span");
     closeButton.classList.add("close-button");
     closeButton.innerHTML = "&times;";
@@ -470,8 +474,9 @@ function drawClickableEvents(mode, toBeDrawn, events, parentElement){
 }
 
 // update color coding by updating :root values
-function updateColorCoding(newColorCoding){
-  const root = document.querySelector(":root");
+function updateColorCoding(newColorCoding, parentElement){
+  // const root = parentElement.querySelector(":root");
+  const root = parentElement;
   for (let i = 0; i < newColorCoding.length; i++){
     const currColorCode = newColorCoding[i];
     root.style.setProperty("--" + currColorCode.eventType + "-color", currColorCode.color);
@@ -511,7 +516,7 @@ TalentCalendar.prototype = {
   // }
   customizeColorCoding: function(newColorCoding){
     this.colorCoding = newColorCoding;
-    updateColorCoding(newColorCoding);
+    updateColorCoding(newColorCoding, this.parentElement);
   },
 
 }

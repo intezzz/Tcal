@@ -187,3 +187,51 @@ tcTwo.createCalendar();
 tcTwo.enableClickableEvents();
 //////////////////////
 
+// second example
+// enabled clickable events
+const tcThree = new TalentCalendar(2021, 2022, 2, 2022, document.getElementById("third-example"));
+tcThree.addEvents([
+  {
+    eventName: "The Late Late Show",
+    eventType: "tv-show",
+    startTime: new Date(2022, 2, 1, 0, 0, 0, 0),
+    endTime: new Date(2022, 2, 1, 0, 1, 0, 0),
+    location: "CBS",
+  },
+  {
+    eventName: "Stand up show",
+    eventType: "stand-up",
+    startTime: new Date(2022, 2, 1, 0, 30, 0, 0),
+    endTime: new Date(2022, 2, 1, 0, 31, 0, 0),
+    location: "Around the corner"
+  },
+  {
+    eventName: "The Quiz show",
+    eventType: "quiz-show",
+    startTime: new Date(2022, 2, 22, 18, 35, 0, 0),
+    endTime: new Date(2022, 2, 22, 19, 30, 0, 0),
+    location: "NTV"
+  },
+])
+tcThree.customizeColorCoding([
+  {
+    eventType: "stand-up",
+    color: "#f5ba83",
+  },
+  {
+    eventType: "tv-show",
+    color: "#8df5cf"
+  },
+  {
+    eventType: "quiz-show",
+    color: "#c9eec3"
+  },
+  {
+    eventType: "default",
+    color: "#f38bb7"
+  }
+])
+tcThree.createCalendar();
+tcThree.enableClickableEvents();
+//////////////////////
+
