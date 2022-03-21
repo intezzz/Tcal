@@ -2,7 +2,7 @@
 console.log("----------");
 console.log("SCRIPT: Creating and loading our JS libraries");
 
-function TalentCalendar(startYear, endYear, currMonth, currYear){
+function TalentCalendar(startYear, endYear, currMonth, currYear, parentElement){
   this.events = [];
   this.clickableEvents = false;
   this.selectedMonth = currMonth;
@@ -20,7 +20,8 @@ function TalentCalendar(startYear, endYear, currMonth, currYear){
       eventType: "tv-show",
       color: "#f5ba83"
     },
-  ]
+  ];
+  this.parentElement = parentElement;
 }
 
 // get the number of days of a given month
@@ -51,7 +52,7 @@ function getFilteredEvents(events, month, year){
 
 // draw the calendar days
 function drawCalendarDays(month, year){
-  const calendarDays = document.getElementById("calendar-days");
+  const calendarDays = this.parentElement.getElementsByClassName("calendar-days")[0];
   // clear previous stuff on the calendar
   calendarDays.innerHTML = "";
 
@@ -96,7 +97,7 @@ function drawCalendarDays(month, year){
       if (selectedDay !== currDate){
         // prevent multiple selection > toggle "selected" when another day is selected
         if (selectedDay !== null){
-          const prevSelected = document.getElementById("calendarday-" + selectedDay);
+          const prevSelected = this.parentElement.getElementById("calendarday-" + selectedDay);
           prevSelected.classList.toggle("selected");
         }
         selectedDay = currDate;
@@ -108,7 +109,7 @@ function drawCalendarDays(month, year){
       this.selectedDay = selectedDay;
 
       // update side panel event display
-      drawEventsPanel(currMonth, currYear, selectedDay, this.events, this.clickableEvents);
+      drawEventsPanel(currMonth, currYear, selectedDay, this.events, this.clickableEvents, this.parentElement);
     }).bind(this));
 
     calendarDays.appendChild(currDay)
@@ -137,10 +138,10 @@ function drawCalendarYears(startYear, endYear, yearsElement){
       return (function (){
         this.selectedYear = i;
         this.selectedDay = null;
-        document.getElementById("curr-year").innerHTML = selectedYear;
+        this.parentElement.getElementsByClassName("curr-year")[0].innerHTML = selectedYear;
         const drawingCalendarDays = drawCalendarDays.bind(this);
         drawingCalendarDays(month, selectedYear); // re-render the calendar days when clicked
-        drawEventsPanel(month, selectedYear, null, this.events, this.clickableEvents);
+        drawEventsPanel(month, selectedYear, null, this.events, this.clickableEvents, this.parentElement);
         return selectedYear;
       }).bind(this)
     }).bind(this)();
@@ -162,10 +163,10 @@ function drawCalendarMonths(monthsElement){
       return (function (){
         this.selectedMonth = selectedMonth;
         this.selectedDay = null;
-        document.getElementById("curr-month").innerHTML = months[i];
+        this.parentElement.getElementsByClassName("curr-month")[0].innerHTML = months[i];
         const drawingCalendarDays = drawCalendarDays.bind(this);
         drawingCalendarDays(i, year); // re-render the calendar days when clicked
-        drawEventsPanel(i, year, null, this.events, this.clickableEvents);
+        drawEventsPanel(i, year, null, this.events, this.clickableEvents, this.parentElement);
         return i;
       }).bind(this)
     }).bind(this)();
@@ -188,7 +189,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   calendarTableData.classList.add("calendar-tablecell");
 
   const eventData = document.createElement("td");
-  eventData.id = "eventlist-cell";
+  eventData.classList.add("eventlist-cell");
   eventData.classList.add("calendar-tablecell");
 
   // append every component
@@ -200,7 +201,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   elementToBeAddedTo.appendChild(calendarTable);
 
   // insert events in this month to the side panel
-  drawEventsPanel(this.selectedMonth, this.selectedYear, this.selectedDay, this.events, this.clickableEvents);
+  drawEventsPanel(this.selectedMonth, this.selectedYear, this.selectedDay, this.events, this.clickableEvents, this.parentElement);
 
 
   // creates the outline of the calendar
@@ -219,7 +220,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
     }
   })();
   const currMonth = document.createElement("span");
-  currMonth.id = "curr-month";
+  currMonth.classList.add("curr-month");
   currMonth.innerHTML = this.months[this.selectedMonth];
   monthButton.append(currMonth);
   const monthsDropdown = document.createElement("div");
@@ -276,7 +277,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
 
   // dates
   const calendarDays = document.createElement("div");
-  calendarDays.id = "calendar-days";
+  calendarDays.classList.add("calendar-days");
   calendarDays.classList.add("days");
 
   // append to calendarDates
@@ -303,8 +304,8 @@ function getStringOfEvent(appearance){
 }
 
 // insert events of current month to side panel
-function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, events, clickableEvent){
-  const calendarData = document.getElementById("eventlist-cell");
+function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, events, clickableEvent, parentElement){
+  const calendarData = parentElement.getElementsByClassName("eventlist-cell")[0];
   calendarData.innerHTML = ""; // clear the canvas to draw events
   const eventList = document.createElement("ul");
   eventList.classList.add("event-list")
@@ -333,7 +334,7 @@ function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, e
         listItem.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${events[i].eventType}-color`);
         listItem.id = "event-" + String(i);
         if (clickableEvent){
-          drawClickableEvents(false, [listItem], events);
+          drawClickableEvents(false, [listItem], events, parentElement);
         }
         const span = document.createElement("span");
         span.classList.add("event-details");
@@ -363,10 +364,10 @@ function getFormattedEventTimeString(currEvent){
 // mode: if it is the first time being called -> through enableClickableEvents = true
 // mode == false -> redrawing due to change of selection -> called through drawEventsPanel
 // toBeDrawn: list of html elements to be drawn
-function drawClickableEvents(mode, toBeDrawn, events){
+function drawClickableEvents(mode, toBeDrawn, events, parentElement){
 
   if (toBeDrawn === null){
-    toBeDrawn = document.getElementsByClassName("event");
+    toBeDrawn = parentElement.getElementsByClassName("event");
   }
 
   for (let i = 0; i < toBeDrawn.length; i++){
@@ -437,7 +438,7 @@ function drawClickableEvents(mode, toBeDrawn, events){
     };
 
     // append modal to body
-    const body = document.getElementsByTagName("body")[0];
+    const body = document.body;
     body.appendChild(eventModal);
     ////////////////////////
 
@@ -449,7 +450,7 @@ function drawClickableEvents(mode, toBeDrawn, events){
 
   // configure close modal when click outside of box
   window.onclick = function(event){
-    const listOfModals = document.getElementsByClassName("event-modal");
+    const listOfModals = parentElement.getElementsByClassName("event-modal");
     for (let i = 0; i < listOfModals.length; i++){
       if (listOfModals[i] === event.target){
         listOfModals[i].style.display = "none";
@@ -470,15 +471,16 @@ function updateColorCoding(newColorCoding){
 TalentCalendar.prototype = {
 
   // create calendar
-  createCalendar: function (elementToBeAddedTo){
+  createCalendar: function (){
+    console.log(this)
     const drawingCalendar = drawCalendar.bind(this);
-    drawingCalendar(elementToBeAddedTo, this.startYear, this.endYear);
+    drawingCalendar(this.parentElement, this.startYear, this.endYear);
   },
 
   // add events
   addEvents: function (events){
     this.events = this.events.concat(events);
-    if (document.getElementsByClassName("calendar").length > 0){
+    if (this.parentElement.getElementsByClassName("calendar").length > 0){
       const drawingCalendarDays = drawCalendarDays.bind(this);
       drawingCalendarDays(this.selectedMonth, this.selectedYear);
     }
@@ -488,7 +490,7 @@ TalentCalendar.prototype = {
   enableClickableEvents: function (){
     this.clickableEvents = true;
     console.log("here")
-    drawClickableEvents(true, null, this.events);
+    drawClickableEvents(true, null, this.events, this.parentElement);
   },
 
   // customize color coding of appearances

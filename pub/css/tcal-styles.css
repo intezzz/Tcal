@@ -154,28 +154,28 @@ body, *{
     margin: 10px;
     padding: 20px;
     align-content: center;
-    text-align: center;
+    text-align: left;
     align-items: center;
 }
 
 
-.calendar-table #calendar-cell{
+.calendar-table .calendar-cell{
     display: inline-block;
-    width: 70%;
+    width: fit-content;
     height: fit-content;
     max-height: fit-content;
 }
 
-.calendar-table #eventlist-cell{
+.calendar-table .eventlist-cell{
     vertical-align: top;
     padding-top: 20px;
     padding-left: 10px;
     display: inline-block;
     /*max-height: 340px;*/
     overflow-y: auto;
-    align-content: center;
+    align-content: flex-start;
     font-family: "Calibri Light", serif;
-    text-align: center;
+    text-align: left;
     scrollbar-gutter: stable;
 }
 
