@@ -212,11 +212,13 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   monthButton.classList.add("calendar-button");
   monthButton.classList.add("month-button");
   monthButton.onclick = (function (){
+    const parentElement = this.parentElement;
     return function (){
-    const months = $("#months");
+    const months = $("#" + parentElement.id + " .months");
+      console.log(months)
     months.toggle("fast");
     }
-  })();
+  }).bind(this)();
   const currMonth = document.createElement("span");
   currMonth.classList.add("curr-month");
   currMonth.innerHTML = this.months[this.selectedMonth];
@@ -233,11 +235,14 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   yearButton.classList.add("calendar-button");
   yearButton.classList.add("month-button");
   yearButton.onclick = (function (){
+    const parentElement = this.parentElement;
     return function (){
-      const years = $("#years");
+      console.log(parentElement)
+      const years = $("#" + parentElement.id + " .years");
+      console.log(years)
       years.toggle("fast");
     }
-  })();
+  }).bind(this)();
   const currYear = document.createElement("span");
   currYear.classList.add("curr-year");
   currYear.innerHTML = this.selectedYear;
