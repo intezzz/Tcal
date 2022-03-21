@@ -160,15 +160,18 @@ body, *{
 
 
 .calendar-table #calendar-cell{
+    display: inline-block;
     width: 70%;
+    height: fit-content;
+    max-height: fit-content;
 }
 
 .calendar-table #eventlist-cell{
     vertical-align: top;
     padding-top: 20px;
-    /*padding-left: 5px;*/
+    padding-left: 10px;
     display: inline-block;
-    max-height: 340px;
+    /*max-height: 340px;*/
     overflow-y: auto;
     align-content: center;
     font-family: "Calibri Light", serif;

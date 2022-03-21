@@ -7,12 +7,7 @@ const express = require('express')
 const app = express();
 
 const path = require('path');
-app.use(express.static(path.join(__dirname, '/pub')))
-
-
-// app.get("/", (req, res) => {
-//   res.send()
-// })
+app.use(express.static(path.join(__dirname, '/pub')));
 
 // use an 'environmental variable', process.env.PORT, for deployment.
 const port = process.env.PORT || 5000
