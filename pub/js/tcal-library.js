@@ -492,10 +492,6 @@ TalentCalendar.prototype = {
   },
 
   // customize color coding of appearances
-  // note: this overwrites all pre-existing color coding and event types,
-  // including default ones
-  // for example, if newColorCoding does not contain eventType: "stand-up",
-  // color coding for "stand-up" type events will no longer exist
   // newColorCoding = list of objects in the format of
   // {
   //   eventType: event-type-name (this is also the class for that type of event)

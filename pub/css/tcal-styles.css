@@ -1,6 +1,8 @@
 :root{
     --stand-up-color: #8df5cf;
     --tv-show-color: #f5ba83;
+    --default-color: #566ae0;
+    --default-color-lighter: #a0a6e0;
 }
 
 body, *{
@@ -69,7 +71,7 @@ body, *{
 .calendar .calendar-button
 {
     float: left;
-    background-color: #24aeff;
+    background-color: var(--default-color);
     /*todo: change color*/
     color: white;
     text-align: center;
@@ -83,7 +85,7 @@ body, *{
 }
 
 .calendar .calendar-button:hover{
-    background-color:#1f71a1;
+    background-color: var(--default-color);
 /*    todo: change color*/
 }
 
@@ -112,7 +114,7 @@ body, *{
 
 .calendar .calendar-dates .days .day.selected
 {
-    background-color: #1caff6;
+    background-color: var(--default-color-lighter);
     /*todo: change color*/
     color: white;
     cursor:pointer;
@@ -181,6 +183,7 @@ body, *{
     margin: 4px;
     align-content: center;
     text-align: center;
+    background-color: var(--default-color);
 }
 
 .event-list .event:hover,
@@ -214,6 +217,7 @@ body, *{
 .event-modal .event-modal-content .event-modal-header {
     padding: 2px 16px;
     color: white;
+    background-color: var(--default-color);
 }
 
 
