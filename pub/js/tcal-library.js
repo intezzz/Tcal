@@ -378,14 +378,22 @@ function drawClickableEvents(mode, toBeDrawn, events, parentElement){
 
     // extract index of event in this.events from element id
     // get the event details
-    const index = currEvent.id.split("-").pop();
+    let index = 0;
+    let currEventId = "";
+    for (let i = 0; i < currEvent.classList.length; i++){
+      const currClassName = currEvent.classList[i];
+      if (currClassName.includes("event-")){
+        index = currClassName.split("-").pop();
+        currEventId = currClassName;
+      }
+    }
     const currEventObj = events[index];
 
     // draw modal (popup)
     ////////////////////////
     const eventModal = document.createElement("div");
     eventModal.classList.add("event-modal");
-    eventModal.classList.add("modal-" + currEvent.id);
+    eventModal.classList.add("modal-" + currEventId);
     eventModal.style.display = "none"; // set as none -> not display unless clicked
     const eventModalContents = document.createElement("div");
     eventModalContents.classList.add("event-modal-content");
