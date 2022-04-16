@@ -20,8 +20,37 @@ function TalentCalendar(startYear, endYear, currMonth, currYear, parentElement){
       eventType: "tv-show",
       color: "#f5ba83"
     },
+    {
+      eventType: "theatre",
+      color: "#deb7ea"
+    },
+    {
+      eventType: "tv-drama",
+      color: "#de9182"
+    },
+    {
+      eventType: "radio",
+      color: "#ded282"
+    },
+    {
+      eventType: "pod-cast",
+      color: "#ded282"
+    },
+    {
+      eventType: "gig",
+      color: "#8dbaf5"
+    },
+    {
+      eventType: "tour",
+      color: "#8789b0"
+    },
+    {
+      eventType: "award-show",
+      color: "#f3a8f1"
+    }
   ];
   this.parentElement = parentElement;
+  this.generalUse = false;
 }
 
 // get the number of days of a given month
@@ -31,6 +60,8 @@ function daysInMonth(month, year){
 }
 
 // get filtered events
+// filter by given month and year
+// return {dateObj: [events]}
 function getFilteredEvents(events, month, year){
   let ret = {};
   for (let i = 0; i < events.length; i++){
@@ -82,14 +113,27 @@ function drawCalendarDays(month, year){
     const currDate = i + 1;
     const currDay = document.createElement("div");
 
-    // todo: use number of events properly
-    // const numberOfEvents = filteredEvents[currDate] ? filteredEvents[currDate].length : 0;
-    const numberOfEvents = filteredEvents[currDate] ? 1 : 0;
+    const numberOfEvents = filteredEvents[currDate] ? filteredEvents[currDate].length : 0;
 
     currDay.classList.add("calendarday-" + currDate);
     currDay.classList.add("day");
-    currDay.innerHTML = String(currDate) + "*".repeat(numberOfEvents); // todo: style properly
-    // todo: style number of events properly
+    if (numberOfEvents > 3){
+      currDay.innerHTML = String(currDate) + "<br/>" + "4+";
+      const eventIndicator = document.createElement("span");
+      eventIndicator.innerHTML = "4+";
+    } else if (numberOfEvents > 0 && numberOfEvents <= 3) {
+      currDay.innerHTML = String(currDate) + "<br/>";
+      for (let j = 0; j < numberOfEvents; j++) {
+        const currEvent = filteredEvents[currDate][j];
+        const eventDot = document.createElement("span");
+        eventDot.innerHTML = "&#8226;";
+        eventDot.style.color = this.parentElement.style.getPropertyValue(`--${currEvent.eventType}-color`);
+        currDay.appendChild(eventDot);
+      }
+    } else{
+      currDay.innerHTML = String(currDate) + "<br/>" + "&nbsp;";
+    }
+
     const currMonth = month;
     const currYear = year;
 
@@ -110,7 +154,7 @@ function drawCalendarDays(month, year){
       this.selectedDay = selectedDay;
 
       // update side panel event display
-      drawEventsPanel(currMonth, currYear, selectedDay, this.events, this.clickableEvents, this.parentElement);
+      drawEventsPanel(currMonth, currYear, selectedDay, this.events, this.clickableEvents, this.parentElement, this.generalUse);
     }).bind(this));
 
     calendarDays.appendChild(currDay)
@@ -142,7 +186,7 @@ function drawCalendarYears(startYear, endYear, yearsElement){
         this.parentElement.getElementsByClassName("curr-year")[0].innerHTML = selectedYear;
         const drawingCalendarDays = drawCalendarDays.bind(this);
         drawingCalendarDays(month, selectedYear); // re-render the calendar days when clicked
-        drawEventsPanel(month, selectedYear, null, this.events, this.clickableEvents, this.parentElement);
+        drawEventsPanel(month, selectedYear, null, this.events, this.clickableEvents, this.parentElement, this.generalUse);
         return selectedYear;
       }).bind(this)
     }).bind(this)();
@@ -167,7 +211,7 @@ function drawCalendarMonths(monthsElement){
         this.parentElement.getElementsByClassName("curr-month")[0].innerHTML = months[i];
         const drawingCalendarDays = drawCalendarDays.bind(this);
         drawingCalendarDays(i, year); // re-render the calendar days when clicked
-        drawEventsPanel(i, year, null, this.events, this.clickableEvents, this.parentElement);
+        drawEventsPanel(i, year, null, this.events, this.clickableEvents, this.parentElement, this.generalUse);
         return i;
       }).bind(this)
     }).bind(this)();
@@ -176,6 +220,9 @@ function drawCalendarMonths(monthsElement){
 }
 
 function drawCalendar(elementToBeAddedTo, startYear, endYear){
+  // set color properties
+  updateColorCoding(this.colorCoding, elementToBeAddedTo);
+
   // create table that contains the calendar
   const calendarTable = document.createElement("table");
   calendarTable.classList.add("calendar-table");
@@ -201,7 +248,7 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
   elementToBeAddedTo.appendChild(calendarTable);
 
   // insert events in this month to the side panel
-  drawEventsPanel(this.selectedMonth, this.selectedYear, this.selectedDay, this.events, this.clickableEvents, this.parentElement);
+  drawEventsPanel(this.selectedMonth, this.selectedYear, this.selectedDay, this.events, this.clickableEvents, this.parentElement, this.generalUse);
 
 
   // creates the outline of the calendar
@@ -304,11 +351,11 @@ function drawCalendar(elementToBeAddedTo, startYear, endYear){
 
 // get string of appearance
 function getStringOfEvent(appearance){
-  return appearance.eventName + "<br>" + appearance.startTime.toLocaleString('en-GB', { timeZone: 'EST' }) + "<br>" + appearance.location;
+  return appearance.eventName + "<br>" + appearance.startTime.toLocaleString('en-GB', { timeZone: 'EST', hour: "2-digit", minute: "2-digit", year: "numeric", month: "numeric", day: "numeric"}) + "<br>" + appearance.location;
 }
 
 // insert events of current month to side panel
-function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, events, clickableEvent, parentElement){
+function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, events, clickableEvent, parentElement, generalUse){
   const calendarData = parentElement.getElementsByClassName("eventlist-cell")[0];
   calendarData.innerHTML = ""; // clear the canvas to draw events
   const eventList = document.createElement("ul");
@@ -339,7 +386,7 @@ function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, e
         listItem.style.backgroundColor = parentElement.style.getPropertyValue(`--${events[i].eventType}-color`);
         listItem.classList.add("event-" + String(i));
         if (clickableEvent){
-          drawClickableEvents(false, [listItem], events, parentElement);
+          drawClickableEvents(false, [listItem], events, parentElement, generalUse);
         }
         const span = document.createElement("span");
         span.classList.add("event-details");
@@ -358,18 +405,19 @@ function drawEventsPanel(currSelectedMonth, currSelectedYear, currSelectedDay, e
 // formatted event time
 // format: 12/3/2022 11:00:00 - 12:00:00
 function getFormattedEventTimeString(currEvent){
+
   const startDate = currEvent.startTime.toLocaleDateString("en-GB", { timeZone: 'EST' });
   const endDate = currEvent.endTime.toLocaleDateString("en-GB", { timeZone: 'EST' });
-  const startTime = currEvent.startTime.toLocaleTimeString("en-GB", { timeZone: 'EST' });
-  const endTime = currEvent.endTime.toLocaleTimeString("en-GB", { timeZone: 'EST' });
+  const startTime = currEvent.startTime.toLocaleTimeString("en-GB", { timeZone: 'EST', hour: "2-digit", minute: "2-digit" });
+  const endTime = currEvent.endTime.toLocaleTimeString("en-GB", { timeZone: 'EST', hour: "2-digit", minute: "2-digit" });
 
-  return startDate + " " + startTime + " - " + (endDate === startDate ? "" : endDate + " ") + endTime + "<br>";
+  return startDate + " " + startTime + "&nbsp; - " + (endDate === startDate ? "" : endDate + " ") + endTime + "<br>";
 }
 
 // mode: if it is the first time being called -> through enableClickableEvents = true
 // mode == false -> redrawing due to change of selection -> called through drawEventsPanel
 // toBeDrawn: list of html elements to be drawn
-function drawClickableEvents(mode, toBeDrawn, events, parentElement){
+function drawClickableEvents(mode, toBeDrawn, events, parentElement, generalUse){
 
   if (toBeDrawn === null){
     toBeDrawn = parentElement.getElementsByClassName("event");
@@ -426,21 +474,120 @@ function drawClickableEvents(mode, toBeDrawn, events, parentElement){
     // modal body
     const modalBody = document.createElement("div");
     modalBody.classList.add("event-modal-body");
+
+    // modal body key visual
+    if (currEventObj.keyVisual !== undefined){
+      const modalEventKeyVisual = document.createElement("img");
+      modalEventKeyVisual.src = currEventObj.keyVisual;
+      modalEventKeyVisual.classList.add("event-modal-key-visual");
+      modalBody.appendChild(modalEventKeyVisual);
+    }
+
+    // modal body basic details
+    // including location, time, description
+    const modalEventBasicDetails = document.createElement("div");
+    modalEventBasicDetails.classList.add("event-modal-basic-details");
+    // location
     const modalEventLocation = document.createElement("span");
     modalEventLocation.classList.add("event-modal-location");
     modalEventLocation.innerHTML = currEventObj.location + "<br>";
-    modalBody.appendChild(modalEventLocation);
+    modalEventBasicDetails.appendChild(modalEventLocation);
+    // time
     const modalEventTime = document.createElement("span");
     modalEventTime.classList.add("event-modal-time");
     modalEventTime.innerHTML = getFormattedEventTimeString(currEventObj);
-    modalBody.appendChild(modalEventTime);
-    if (currEventObj.description !== undefined){
+    modalEventBasicDetails.appendChild(modalEventTime);
+    // description
+    if (currEventObj.description){
       const modalEventDescription = document.createElement("p");
       modalEventDescription.classList.add("event-modal-description");
       modalEventDescription.innerHTML = currEventObj.description;
-      modalBody.appendChild(modalEventDescription);
+      modalEventBasicDetails.appendChild(modalEventDescription);
     }
-    // todo: add support for hosts/guests, ticketting info etc.
+    modalBody.appendChild(modalEventBasicDetails);
+
+    // modal body hosts
+    if (currEventObj.host){
+      const modalEventHost = document.createElement("div");
+      modalEventHost.classList.add("event-modal-host");
+      modalEventHost.innerHTML = "Host: <br/>";
+      // loop through list of host info
+      for (let j = 0; j < currEventObj.host.length; j++){
+        const currHost = document.createElement("div");
+        currHost.classList.add("event-modal-host-container");
+        const name = document.createElement("span");
+        name.innerHTML = "<br/>" + currEventObj.host[j].name;
+        name.classList.add("event-modal-host-name");
+        const hostImage = document.createElement("img");
+        hostImage.src = currEventObj.host[j].image;
+        hostImage.classList.add("event-modal-host-image");
+        currHost.appendChild(hostImage);
+        currHost.appendChild(name);
+        modalEventHost.appendChild(currHost);
+      }
+      modalBody.appendChild(modalEventHost);
+    }
+
+    // modal body cast
+    if (currEventObj.cast){
+      const modalEventCast = document.createElement("div");
+      modalEventCast.classList.add("event-modal-host");
+      modalEventCast.innerHTML = "Cast: <br/>";
+      // loop through list of cast
+      for (let j = 0; j < currEventObj.cast.length; j++){
+        const currCastMember = document.createElement("div");
+        currCastMember.classList.add("event-modal-host-container");
+        const name = document.createElement("span");
+        name.innerHTML = "<br/>" + currEventObj.cast[j].name;
+        name.classList.add("event-modal-host-name");
+        const castImage = document.createElement("img");
+        castImage.src = currEventObj.cast[j].image;
+        castImage.classList.add("event-modal-host-image");
+        currCastMember.appendChild(castImage);
+        currCastMember.appendChild(name);
+        modalEventCast.appendChild(currCastMember);
+      }
+      modalBody.appendChild(modalEventCast);
+    }
+
+    // modal body guests
+    if (currEventObj.guests){
+      const modalEventGuest = document.createElement("div");
+      modalEventGuest.classList.add("event-modal-guest");
+      modalEventGuest.innerHTML = "Guests: <br/>";
+      // loop through list of guests info
+      for (let j = 0; j < currEventObj.guests.length; j++){
+        const currGuest = document.createElement("div");
+        currGuest.classList.add("event-modal-host-container");
+        const name = document.createElement("span");
+        name.innerHTML = "<br/>" + currEventObj.guests[j].name;
+        name.classList.add("event-modal-host-name");
+        const guestImage = document.createElement("img");
+        guestImage.src = currEventObj.guests[j].image;
+        guestImage.classList.add("event-modal-host-image");
+        currGuest.appendChild(guestImage);
+        currGuest.appendChild(name);
+        modalEventGuest.appendChild(currGuest);
+      }
+      modalBody.appendChild(modalEventGuest);
+    }
+
+    // modal body ticketing information
+    if (currEventObj.ticketingInfo){
+      const modalEventTicketing = document.createElement("div");
+      modalEventTicketing.classList.add("event-modal-ticketing");
+      modalEventTicketing.innerHTML = `Ticketing information: ${currEventObj.ticketingInfo.description} <br/>
+                                       Book your tickets <a href="${currEventObj.ticketingInfo.link}">here</a> now!`;
+      modalBody.appendChild(modalEventTicketing);
+    }
+
+    // modal body disclaimer: check show details on event official website
+    if (!generalUse){
+      const modalEventDisclaimer = document.createElement("div");
+      modalEventDisclaimer.classList.add("event-modal-disclaimer");
+      modalEventDisclaimer.innerHTML = `Please check <a href="${currEventObj.officialWebsite}">official website</a> for most updated and detailed information.`
+      modalBody.appendChild(modalEventDisclaimer);
+    }
 
     // append components to modal
     eventModalContents.appendChild(modalHeader);
@@ -483,6 +630,35 @@ function updateColorCoding(newColorCoding, parentElement){
   }
 }
 
+// deal with recurring events
+function processEvents(events){
+  const processedEvents = [];
+  for (let i = 0; i < events.length; i++){
+    if (events[i].recurringEvent){
+      const currEvent = events[i];
+      for (let j = 0; j < currEvent.recurrence.numberOfTimes; j++){
+        const newEvent = {...currEvent};
+        newEvent.startTime = new Date(currEvent.startTime.getTime());
+        newEvent.endTime = new Date(currEvent.endTime.getTime());
+        if (currEvent.recurrence.repeat === "daily"){
+          newEvent.startTime.setDate(newEvent.startTime.getDate() + j);
+          newEvent.endTime.setDate(newEvent.endTime.getDate() + j);
+        } else if (currEvent.recurrence.repeat === "weekly"){
+          newEvent.startTime.setDate(newEvent.startTime.getDate() + j * 7);
+          newEvent.endTime.setDate(newEvent.endTime.getDate() + j * 7);
+        } else if (currEvent.recurrence.repeat === "monthly"){
+          newEvent.startTime.setMonth(newEvent.startTime.getMonth() + j);
+          newEvent.endTime.setMonth(newEvent.endTime.getMonth() + j);
+        }
+        processedEvents.push(newEvent);
+      }
+    } else{
+      processedEvents.push(events[i]);
+    }
+  }
+  return processedEvents;
+}
+
 TalentCalendar.prototype = {
 
   // create calendar
@@ -494,7 +670,7 @@ TalentCalendar.prototype = {
 
   // add events
   addEvents: function (events){
-    this.events = this.events.concat(events);
+    this.events = this.events.concat(processEvents(events));
     if (this.parentElement.getElementsByClassName("calendar").length > 0){
       const drawingCalendarDays = drawCalendarDays.bind(this);
       drawingCalendarDays(this.selectedMonth, this.selectedYear);
@@ -505,7 +681,16 @@ TalentCalendar.prototype = {
   enableClickableEvents: function (){
     this.clickableEvents = true;
     console.log("here")
-    drawClickableEvents(true, null, this.events, this.parentElement);
+    drawClickableEvents(true, null, this.events, this.parentElement, this.generalUse);
+  },
+
+  // disable clickable side panel event pop-up
+  disableClickableEvents: function (){
+    this.clickableEvents = false;
+    if (this.parentElement.getElementsByClassName("calendar").length > 0){
+      const drawingCalendarDays = drawCalendarDays.bind(this);
+      drawingCalendarDays(this.selectedMonth, this.selectedYear);
+    }
   },
 
   // customize color coding of appearances
@@ -513,10 +698,22 @@ TalentCalendar.prototype = {
   // {
   //   eventType: event-type-name (this is also the class for that type of event)
   //   color: #colorCode
-  // }
+  // },
+  // which is also the full color scheme including default colors
   customizeColorCoding: function(newColorCoding){
     this.colorCoding = newColorCoding;
-    updateColorCoding(newColorCoding, this.parentElement);
+    updateColorCoding(this.colorCoding, this.parentElement);
+  },
+
+  // for general usage
+  // gets rid of the disclaimer at the bottom of event pop-up
+  forGeneralUsage: function (){
+    this.generalUse = true;
+    // redraw calendar if enabled after drawing
+    if (this.parentElement.getElementsByClassName("calendar").length > 0){
+      const drawingCalendarDays = drawCalendarDays.bind(this);
+      drawingCalendarDays(this.selectedMonth, this.selectedYear);
+    }
   },
 
 }

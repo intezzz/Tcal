@@ -72,7 +72,6 @@ body, *{
 {
     float: left;
     background-color: var(--default-color);
-    /*todo: change color*/
     color: white;
     text-align: center;
     font-size: 14pt;
@@ -86,7 +85,6 @@ body, *{
 
 .calendar .calendar-button:hover{
     background-color: var(--default-color);
-/*    todo: change color*/
 }
 
 .calendar .year-button
@@ -106,29 +104,24 @@ body, *{
     border: solid 1px #ddd;
 }
 
-.calendar .calendar-dates .days .day.blank
-{
+.calendar .calendar-dates .days .day.blank {
     background-color: white;
     border:none;
 }
 
-.calendar .calendar-dates .days .day.selected
-{
+.calendar .calendar-dates .days .day.selected {
     background-color: var(--default-color-lighter);
-    /*todo: change color*/
     color: white;
     cursor:pointer;
     opacity: .5;
     transition: .5s opacity;
 }
 
-.calendar .calendar-dates .days .day:hover
-{
+.calendar .calendar-dates .days .day:hover {
     cursor:pointer;
 }
 
-.calendar .calendar-dates .days .day.selected:hover
-{
+.calendar .calendar-dates .days .day.selected:hover {
     opacity: 1;
 }
 
@@ -177,6 +170,11 @@ body, *{
     font-family: "Calibri Light", serif;
     text-align: left;
     scrollbar-gutter: stable;
+    text-align: center;
+}
+
+.event-list {
+    margin-top: 5px;
 }
 
 .event-list .event{
@@ -187,6 +185,11 @@ body, *{
     align-content: center;
     text-align: center;
     background-color: var(--default-color);
+}
+
+.event-title {
+    padding: 3px;
+    font-style: italic;
 }
 
 .event-list .event:hover,
@@ -202,20 +205,21 @@ body, *{
     word-break: break-word;
     font-family: "Calibri Light", serif;
 }
-
 .event-modal {
     display: none;
     position: fixed;
     z-index: 1;
-    padding-top: 15%;
-    left: 0;
-    top: 0;
+    padding-top: 10%;
+    left: 50%;
+    top: 50%;
     width: 100%;
     height: 100%;
+    transform: translate(-50%, -50%);
     overflow: auto;
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* black with opacity */
 }
+
 
 .event-modal .event-modal-content .event-modal-header {
     padding: 2px 16px;
@@ -228,8 +232,54 @@ body, *{
     padding: 2px 16px;
 }
 
+.event-modal .event-modal-content .event-modal-body .event-modal-key-visual {
+    width: auto;
+    height: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    float: left;
+}
+
 .event-modal .event-modal-content .event-modal-body .event-modal-location {
     font-style: italic;
+}
+
+.event-modal .event-modal-content .event-modal-body .event-modal-host div,
+.event-modal .event-modal-content .event-modal-body .event-modal-guest div {
+    float: left;
+    padding-right: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.event-modal .event-modal-content .event-modal-body .event-modal-guest {
+    clear: both;
+}
+
+.event-modal-host-container {
+    width: 105px;
+    height: auto;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.event-modal-host-image {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.event-modal .event-modal-content .event-modal-body .event-modal-ticketing {
+    clear: both;
+}
+
+.event-modal .event-modal-content .event-modal-body .event-modal-disclaimer {
+    clear: both;
+    font-style: italic;
+    font-size: smaller;
+    text-align: center;
 }
 
 .event-modal .event-modal-content {
