@@ -373,8 +373,10 @@
     for (let i = 0; i < events.length; i++){
       const currDate = events[i].startTime;
       const today = new Date();
+      console.log("today", today);
+      console.log(currSelectedYear, currSelectedMonth)
       if (currDate.getFullYear() === currSelectedYear && currDate.getMonth() === currSelectedMonth){
-        if (currSelectedDay === null && today.getDate() <= currDate.getDate() || currSelectedDay === currDate.getDate()){
+        if ((currSelectedDay === null && today.getDate() <= currDate.getDate() && today.getMonth() <= currDate.getMonth() && today.getFullYear() <= currDate.getFullYear()) || currSelectedDay === currDate.getDate()){
           if (currSelectedDay === null){
             count += 1;
           }
@@ -392,7 +394,7 @@
           span.innerHTML = _getStringOfEvent(events[i]);
           listItem.appendChild(span);
           eventList.appendChild(listItem);
-          if (count === 4){
+          if (count === 5){
             break;
           }
         }
