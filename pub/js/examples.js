@@ -36,7 +36,7 @@ tc.addEvents([
     eventName: "Sponge Bob",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 29, 20, 32, 0, 0),
-    endTime: new Date(2022, 3, 29, 22, 1, 0, 0),
+    endTime: new Date(2022, 3, 29, 22, 0, 0, 0),
     location: "Wherever I like",
     description: "Using Sponge Bob voice for one show",
   },
@@ -44,49 +44,56 @@ tc.addEvents([
     eventName: "Stand up",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 2, 0, 33, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
+    endTime: new Date(2022, 3, 2, 0, 34, 0, 0),
     location: "somewhere"
   },
   {
     eventName: "Stand up",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 2, 0, 34, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
+    endTime: new Date(2022, 3, 2, 0, 35, 0, 0),
     location: "somewhere"
   },
   {
     eventName: "Stand up",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 22, 0, 35, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
+    endTime: new Date(2022, 3, 22, 0, 36, 0, 0),
     location: "somewhere"
   },
   {
     eventName: "Stand up",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 27, 0, 36, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
+    endTime: new Date(2022, 3, 27, 0, 37, 0, 0),
     location: "somewhere"
   },
   {
     eventName: "Stand up",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 23, 0, 37, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
+    endTime: new Date(2022, 3, 23, 0, 38, 0, 0),
     location: "somewhere"
   },
   {
     eventName: "Stand up",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 30, 0, 38, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
+    endTime: new Date(2022, 3, 30, 0, 39, 0, 0),
     location: "somewhere"
   },
   {
     eventName: "Stand up",
     eventType: "stand-up",
     startTime: new Date(2022, 3, 30, 0, 39, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
+    endTime: new Date(2022, 3, 30, 0, 40, 0, 0),
+    location: "somewhere"
+  },
+  {
+    eventName: "Stand up",
+    eventType: "stand-up",
+    startTime: new Date(2022, 3, 30, 0, 40, 0, 0),
+    endTime: new Date(2022, 3, 30, 0, 41, 0, 0),
     location: "somewhere"
   },
 ])
@@ -187,7 +194,7 @@ tcTwo.createCalendar();
 tcTwo.enableClickableEvents();
 //////////////////////
 
-// second example
+// third example
 // enabled clickable events
 const tcThree = new TalentCalendar(2021, 2022, 3, 2022, document.getElementById("third-example"));
 tcThree.addEvents([
@@ -303,7 +310,7 @@ tcFour.addEvents([
     startTime: new Date(2022, 3, 22, 18, 35, 0, 0),
     endTime: new Date(2022, 3, 22, 19, 30, 0, 0),
     location: "NTV",
-    description: "the horrifying secret-revealing quiz show",
+    description: "The horrifying secret-revealing quiz show.",
     officialWebsite: "https://www.ntv.co.jp/quizshow/",
     host: [{name: "Sho Sakurai", image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124613/external-content.duckduckgo.com_oglygl.jpg"}],
     guests: [{name: "You Yokoyama", image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124697/external-content.duckduckgo.com_azemns.jpg"}],

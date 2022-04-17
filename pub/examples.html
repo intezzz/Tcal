@@ -6,6 +6,7 @@
 
     <!--link styles-->
     <link rel="stylesheet" type="text/css" href="css/tcal-styles.css">
+    <link rel="stylesheet" type="text/css" href="css/landing-styles.css">
 
     <title>Individual Project - Alpha Release</title>
 
@@ -18,12 +19,6 @@
 
 
 </head>
-<style>
-    table, th, td {
-        border: 1px solid black;
-        padding: 5px;
-    }
-</style>
 <body style="padding: 25px;">
     <h1 style="text-align: center" id="top">Tcal</h1>
     <p style="text-align: center">Represent talents' public appearances nicely with this Javascript calendar library.</p>
@@ -99,13 +94,25 @@
         </div>
 
         <div>
-            <h3>Colors? Set them as your liking!</h3>
-            <p>You can also set your own color scheme! This example here changed the color-coding of the calendar.</p>
+            <h3>Colors? Recurring Events? Set them as your liking!</h3>
+            <p>You can also set your own color scheme! This example here changed the color-coding of the calendar. <br>
+                We also support recurring events! Click on 9 Apr to see a recurring event!
+            </p>
             <div id="third-example"></div>
             <pre>
                 <code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px;">
                     const tc = new TalentCalendar(2021, 2022, 3, 2022, document.getElementById("first-example"));
                     tc.addEvents(events); // events: a list of events
+                    // the recurring event object
+                    // {
+                    //   eventName: "recurring event",
+                    //   eventType: "stand-up",
+                    //   startTime: new Date(2022, 3, 9, 10, 0, 0, 0),
+                    //   endTime: new Date(2022, 3, 9, 11, 0, 0, 0),
+                    //   location: "recurring",
+                    //   recurringEvent: true,
+                    //   recurrence: {numberOfTimes: 2, repeat: "daily"},
+                    // }
                     tc.customizeColorCoding([
                       {
                         eventType: "stand-up",
@@ -155,7 +162,7 @@
     <div style="padding: 25px">
         <h2 id="api">API</h2>
         <p>Below are all the API functions available in <em>Tcal</em></p>
-        <table>
+        <table class="api-table">
             <tr>
                 <th>Function</th>
                 <th>Description</th>

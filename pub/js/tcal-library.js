@@ -350,7 +350,7 @@
 
 // get string of appearance
   function _getStringOfEvent(appearance){
-    return appearance.eventName + "<br>" + appearance.startTime.toLocaleString('en-GB', { timeZone: 'EST', hour: "2-digit", minute: "2-digit", year: "numeric", month: "numeric", day: "numeric"}) + "<br>" + appearance.location;
+    return appearance.eventName + "<br>" + appearance.startTime.toLocaleString([], {hour12: false, hour: "2-digit", minute: "2-digit", year: "numeric", month: "numeric", day: "numeric"}) + "<br>" + appearance.location;
   }
 
 // insert events of current month to side panel
@@ -373,8 +373,6 @@
     for (let i = 0; i < events.length; i++){
       const currDate = events[i].startTime;
       const today = new Date();
-      console.log("today", today);
-      console.log(currSelectedYear, currSelectedMonth)
       if (currDate.getFullYear() === currSelectedYear && currDate.getMonth() === currSelectedMonth){
         if ((currSelectedDay === null && today.getDate() <= currDate.getDate() && today.getMonth() <= currDate.getMonth() && today.getFullYear() <= currDate.getFullYear()) || currSelectedDay === currDate.getDate()){
           if (currSelectedDay === null){
@@ -407,10 +405,10 @@
 // format: 12/3/2022 11:00:00 - 12:00:00
   function _getFormattedEventTimeString(currEvent){
 
-    const startDate = currEvent.startTime.toLocaleDateString("en-GB", { timeZone: 'EST' });
-    const endDate = currEvent.endTime.toLocaleDateString("en-GB", { timeZone: 'EST' });
-    const startTime = currEvent.startTime.toLocaleTimeString("en-GB", { timeZone: 'EST', hour: "2-digit", minute: "2-digit" });
-    const endTime = currEvent.endTime.toLocaleTimeString("en-GB", { timeZone: 'EST', hour: "2-digit", minute: "2-digit" });
+    const startDate = currEvent.startTime.toLocaleDateString();
+    const endDate = currEvent.endTime.toLocaleDateString();
+    const startTime = currEvent.startTime.toLocaleTimeString([], {hour12: false, hour: "2-digit", minute: "2-digit" });
+    const endTime = currEvent.endTime.toLocaleTimeString([], {hour12: false, hour: "2-digit", minute: "2-digit" });
 
     return startDate + " " + startTime + "&nbsp; - " + (endDate === startDate ? "" : endDate + " ") + endTime + "<br>";
   }
