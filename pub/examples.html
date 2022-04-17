@@ -18,17 +18,240 @@
 
 
 </head>
-<body style="padding: 25px">
-    <div id="first-example">
-        <h2>This example does not have clickable items on the side panel</h2>
-    </div>
-    <div id="second-example">
-        <h2>This example enabled clickable items on the side panel, clicking on them activates a pop-up</h2>
-    </div>
-    <div id="third-example">
-        <h2>This example modified the color code</h2>
-    </div>
-    <div id="fourth-example"></div>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        padding: 5px;
+    }
+</style>
+<body style="padding: 25px;">
+    <h1 style="text-align: center" id="top">Tcal</h1>
+    <p style="text-align: center">Represent talents' public appearances nicely with this Javascript calendar library.</p>
 
+    <div style="padding: 25px">
+        <h2>Table of contents</h2>
+        <ul style="list-style-type: none">
+            <li><a href="#description">Description</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#api">API</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </div>
+
+
+    <hr style="width: 50%; margin: 0 auto;"/>
+
+    <div style="padding: 25px">
+        <h2 id="description">Description</h2>
+        <p>The library is simple, like every other calendar library you might have seen, but geared towards representing
+            talents' public appearances with the various options.
+        </p>
+        <p>There is a very self-explanatory calendar layout on the left, and on the right is an <em>"event panel"</em>,
+           where it either shows the events on the day the user selected <em>(try clicking on the days!)</em>, or the upcoming
+           5 appearances at the time being, including today.
+        </p>
+    </div>
+
+
+    <hr style="width: 50%; margin: 0 auto;"/>
+
+    <div style="padding: 25px">
+        <h2 id="usage">Usage</h2>
+        <p>Find this calendar nice and want to use it for other general purposes? Sure! We have designed this library such
+            it accommodates these types of usages. Simply check out the <a href="generalusage">API function</a> for enabling this flexibility.
+        </p>
+    </div>
+
+    <hr style="width: 50%; margin: 0 auto;"/>
+
+    <div style="padding: 25px">
+        <h2 id="examples">Examples</h2>
+
+        <br>
+
+        <div>
+            <h3>Without all the fancy stuff</h3>
+            <p>Sometimes we don't need all that fancy, we only want to display everything, and that's it. This example demonstrates
+                how to use the calendar without all the clickable events on the right, it just displays everything.
+            </p>
+            <div id="first-example"></div>
+            <pre>
+                <code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px;">
+                    const tc = new TalentCalendar(2021, 2022, 3, 2022, document.getElementById("first-example"));
+                    tc.addEvents(events); // events: a list of events
+                    tc.createCalendar();
+                </code>
+            </pre>
+        </div>
+        <div>
+            <h3>With the fancy stuff</h3>
+            <p>This one has everything applied. With the clickable events showing on the side.</p>
+            <div id="second-example"></div>
+            <pre>
+                <code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px;">
+                    const tc = new TalentCalendar(2021, 2022, 3, 2022, document.getElementById("first-example"));
+                    tc.addEvents(events); // events: a list of events
+                    tc.createCalendar();
+                    tc.enableClickableEvents();
+                </code>
+            </pre>
+        </div>
+
+        <div>
+            <h3>Colors? Set them as your liking!</h3>
+            <p>You can also set your own color scheme! This example here changed the color-coding of the calendar.</p>
+            <div id="third-example"></div>
+            <pre>
+                <code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px;">
+                    const tc = new TalentCalendar(2021, 2022, 3, 2022, document.getElementById("first-example"));
+                    tc.addEvents(events); // events: a list of events
+                    tc.customizeColorCoding([
+                      {
+                        eventType: "stand-up",
+                        color: "#f5ba83",
+                      },
+                      {
+                        eventType: "tv-show",
+                        color: "#8df5cf"
+                      },
+                      {
+                        eventType: "quiz-show",
+                        color: "#c9eec3"
+                      },
+                      {
+                        eventType: "default",
+                        color: "#f38bb7"
+                      },
+                      {
+                        eventType: "theatre",
+                        color: "#ce6fe5"
+                      }
+                    ]);
+                    tc.createCalendar();
+                    tc.enableClickableEvents();
+                </code>
+            </pre>
+        </div>
+
+        <div>
+            <h3>Want to use it for general purposes?</h3>
+            <p>Sure! Simply indicate it with the function <code>forGeneralUsage()</code>!</p>
+            <div id="forth-example"></div>
+            <pre>
+                <code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px;">
+                    const tc = new TalentCalendar(2021, 2022, 3, 2022, document.getElementById("first-example"));
+                    tc.addEvents(events); // events: a list of events
+                    tc.forGeneralUsage();
+                    tc.createCalendar();
+                    tc.enableClickableEvents();
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <hr style="width: 50%; margin: 0 auto;"/>
+
+    <div style="padding: 25px">
+        <h2 id="api">API</h2>
+        <p>Below are all the API functions available in <em>Tcal</em></p>
+        <table>
+            <tr>
+                <th>Function</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><code>TalentCalendar(startYear, endYear, currMonth, currYear, parentElement)</code></td>
+                <td>Constructor.
+                    <ul>
+                        <li><code>startYear</code>: oldest year in the calendar</li>
+                        <li><code>endYear</code>: newest year in the calendar</li>
+                        <li><code>currMonth</code>: default display month</li>
+                        <li><code>currYear</code>: default display year</li>
+                        <li><code>parentElement</code>: HTML element that the calendar is to be inserted to</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><code>createCalendar()</code></td>
+                <td>Creates a calendar instance on the element <code>parentElement</code> that is indicated when initializing the <code>TalentCalendar</code> instance</td>
+            </tr>
+            <tr>
+                <td><code>addEvents(events)</code></td>
+                <td>Add the list of appearances <code>events</code> to the calendar view</td>
+            </tr>
+            <tr>
+                <td><code>enableClickableEvents(), <br>disableClickableEvents()</code></td>
+                <td>Enable/Disable clickable side panel items.</td>
+            </tr>
+            <tr>
+                <td><code>customizeColorCoding(newColorCoding)</code></td>
+                <td>Changes the color-coding of the calendar, <code>newColorCoding</code>is a list of <code>ColorCoding</code> objects. This should represent the full color scheme, including default colors.</td>
+            </tr>
+            <tr>
+                <td><code id="generalusage">forGeneralUsage()</code></td>
+                <td>Gets rid of the disclaimer at the bottom of event pop-ups. Only call this when you want to use this library for general purposes.</td>
+            </tr>
+        </table>
+        <h3>Objects Explained</h3>
+        <p>When using the library, you will encounter some JS objects that are necessary to using the library correctly.</p>
+        <pre>
+            <code style="background-color: #eee; border: 1px solid #999; display: block; padding: 20px;">
+                Event: // an event showed on the calendar
+                {
+                  eventName: "name of the event",
+                  eventType: "type of event, used for color coding",
+                  startTime: "Date object, start time of event",
+                  endTime: "Date object, end time of event",
+                  location: "location of appearance, can be TV channel or physical location",
+                  officialWebsite: "url to official website of the event, nullable iff forGeneralUsage() is called",
+                  description: "description of the event/appearance, nullable",
+                  host: "host of show, nullable, list of person objects",
+                  guests: "guests of show, nullable, list of person objects",
+                  keyVisual: "key visual of event, nullable, url to an image",
+                  ticketingInfo: "ticketing information, nullable, ticketing information object",
+                  cast: "cast of the show/film/tv-drama, list of person objects",
+                  recurringEvent: "boolean, true if this event is a recurring event, nullable",
+                  recurrence: "recurrence information, nullable iff recurringEvent == false, recurrence object"
+                }
+
+                Person: // a person object, represents a person, used in host, guests, cast
+                {
+                  name: "name of person",
+                  image: "url to image of person"
+                }
+
+                Ticketing Information: // a ticketing information object, represents ticketing information, used in ticketingInfo
+                {
+                  description: "a short summary of the ticketing information",
+                  link: "url to the ticketing website"
+                }
+
+                Recurrence: // represents recurring event information, used in recurrence
+                {
+                  numberOfTimes: "integer, how many times this event will repeat",
+                  repeat: "frequency of repeat. available options are 'daily', 'weekly', 'monthly'"
+                }
+
+                ColorCoding: // color coding of calendar
+                {
+                  eventType: "used as class name, put ‘default’ to change theme color",
+                  color: "color code of above eventType",
+                }
+            </code>
+        </pre>
+    </div>
+
+    <hr style="width: 50%; margin: 0 auto;"/>
+
+    <div style="padding: 25px">
+        <h2 id="about">About</h2>
+        <p>As someone who likes catching live streams of appearances on TV, the "media appearance" page on some talents' homepage is simply too unreadable. A calendar like this would a) greatly increase readability, b) way more convenient to
+           find the show you are looking for, c) just look more organized while benefiting the users, us!
+        </p>
+        <p>Made by: a struggling CS student who happens to also be a weeb</p>
+    </div>
+
+    <a href="#top" style="margin: 0 auto; display: table">Back to top</a>
 </body>
 </html>

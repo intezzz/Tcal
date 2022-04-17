@@ -583,12 +583,10 @@
       }
 
       // modal body disclaimer: check show details on event official website
-      if (!generalUse){
-        const modalEventDisclaimer = document.createElement("div");
-        modalEventDisclaimer.classList.add("event-modal-disclaimer");
-        modalEventDisclaimer.innerHTML = `Please check <a href="${currEventObj.officialWebsite}">official website</a> for most updated and detailed information.`
-        modalBody.appendChild(modalEventDisclaimer);
-      }
+      const modalEventDisclaimer = document.createElement("div");
+      modalEventDisclaimer.classList.add("event-modal-disclaimer");
+      modalEventDisclaimer.innerHTML = generalUse ? "" : `Please check <a href="${currEventObj.officialWebsite}">official website</a> for most updated and detailed information.`;
+      modalBody.appendChild(modalEventDisclaimer);
 
       // append components to modal
       eventModalContents.appendChild(modalHeader);
