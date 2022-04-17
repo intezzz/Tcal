@@ -12,13 +12,6 @@ tc.addEvents([
     location: "CBS",
   },
   {
-    eventName: "Stand up show",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 1, 0, 30, 0, 0),
-    endTime: new Date(2022, 3, 1, 0, 31, 0, 0),
-    location: "Around the corner"
-  },
-  {
     eventName: "The Quiz show",
     eventType: "tv-show",
     startTime: new Date(2022, 3, 22, 18, 35, 0, 0),
@@ -27,10 +20,15 @@ tc.addEvents([
   },
   {
     eventName: "The Quiz show",
-    eventType: "tv-show",
+    eventType: "tv-drama",
     startTime: new Date(2022, 3, 30, 18, 35, 0, 0),
     endTime: new Date(2022, 3, 30, 19, 30, 0, 0),
-    location: "NTV"
+    location: "NTV",
+    description: "The horrifying secret-revealing quiz show.",
+    officialWebsite: "https://www.ntv.co.jp/quizshow/",
+    host: [{name: "Sho Sakurai", image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124613/external-content.duckduckgo.com_oglygl.jpg"}],
+    guests: [{name: "You Yokoyama", image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124697/external-content.duckduckgo.com_azemns.jpg"}],
+    keyVisual: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124762/external-content.duckduckgo.com_bfbb8o.jpg",
   },
   {
     eventName: "Sponge Bob",
@@ -41,39 +39,24 @@ tc.addEvents([
     description: "Using Sponge Bob voice for one show",
   },
   {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 2, 0, 33, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 34, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 2, 0, 34, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 35, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 22, 0, 35, 0, 0),
-    endTime: new Date(2022, 3, 22, 0, 36, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 27, 0, 36, 0, 0),
-    endTime: new Date(2022, 3, 27, 0, 37, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 23, 0, 37, 0, 0),
-    endTime: new Date(2022, 3, 23, 0, 38, 0, 0),
-    location: "somewhere"
+    eventName: "Witness for the Prosecution",
+    eventType: "theatre",
+    startTime: new Date(2022, 3, 1, 18, 30, 0, 0),
+    endTime: new Date(2022, 3, 1, 18, 31, 0, 0),
+    location: "London County Hall",
+    ticketingInfo: {description: "£25 each, buy through TodayTix", link: "https://www.todaytix.com/london/shows/7406-witness-for-the-prosecution"},
+    keyVisual: "https://res.cloudinary.com/djvbkencg/image/upload/v1650131649/prod_1568388189325_5666_07_WFTP_TodayTix_480x720_bpqsey.webp",
+    officialWebsite: "https://witnesscountyhall.com/",
+    cast: [{
+      name: "James Alper",
+      image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650133408/James_Alper_-_Warder_osrjlm.jpg"
+    }, {
+      name: "Lily Blunsom-Washbrook",
+      image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650133489/Lily_Blunsom-Washbrook_-_The_Woman_jrjvbf.jpg",
+    }, {
+      name: "James Hayes",
+      image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650133922/James_Hayes_-_Mr_Justice_Wainwright_vt4has.jpg"
+    }]
   },
   {
     eventName: "Stand up",
@@ -127,10 +110,15 @@ tcTwo.addEvents([
   },
   {
     eventName: "The Quiz show",
-    eventType: "tv-show",
+    eventType: "tv-drama",
     startTime: new Date(2022, 3, 30, 18, 35, 0, 0),
     endTime: new Date(2022, 3, 30, 19, 30, 0, 0),
-    location: "NTV"
+    location: "NTV",
+    description: "The horrifying secret-revealing quiz show.",
+    officialWebsite: "https://www.ntv.co.jp/quizshow/",
+    host: [{name: "Sho Sakurai", image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124613/external-content.duckduckgo.com_oglygl.jpg"}],
+    guests: [{name: "You Yokoyama", image: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124697/external-content.duckduckgo.com_azemns.jpg"}],
+    keyVisual: "https://res.cloudinary.com/djvbkencg/image/upload/v1650124762/external-content.duckduckgo.com_bfbb8o.jpg",
   },
   {
     eventName: "Sponge Bob",
@@ -139,55 +127,6 @@ tcTwo.addEvents([
     endTime: new Date(2022, 3, 29, 22, 1, 0, 0),
     location: "Wherever I like",
     description: "Using Sponge Bob voice for one show",
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 2, 0, 33, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 2, 0, 34, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 22, 0, 35, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 27, 0, 36, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 23, 0, 37, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 30, 0, 38, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
-    location: "somewhere"
-  },
-  {
-    eventName: "Stand up",
-    eventType: "stand-up",
-    startTime: new Date(2022, 3, 30, 0, 39, 0, 0),
-    endTime: new Date(2022, 3, 2, 0, 1, 0, 0),
-    location: "somewhere"
   },
 ])
 tcTwo.createCalendar();
